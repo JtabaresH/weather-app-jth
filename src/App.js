@@ -8,9 +8,14 @@ export default function App() {
   const [weather, setWeather] = useState({});
   const [celsius, setCelsius] = useState(0);
   const [isCelsius, setIsCelsius] = useState(true);
-  
   const [loading, setLoading] = useState(false);
+  const weatherBackground = `${weather.weather?.[0].description}`
+  const [changeBackground, setChangeBackground] = useState(weatherBackground);
 
+      if(changeBackground === "overcast clouds"){
+        setChangeBackground(document.body.style.background="url('https://thumbs.dreamstime.com/b/clouds-overcast-sky-view-climate-environment-weather-concept-sky-background-overcast-sky-background-clouds-170172058.jpg') no-repeat")
+      }
+      console.log(weatherBackground)
     useEffect(() => {
         setLoading(true);
          setTimeout(() => {
@@ -28,6 +33,7 @@ export default function App() {
         .then((res) => {
           setWeather(res.data);
           setCelsius((res.data.main.temp - 273.15).toFixed(2));
+          setChangeBackground(res.data.weather?.[0].description)
         });
       }
       
