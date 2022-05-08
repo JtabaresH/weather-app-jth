@@ -10,7 +10,6 @@ export default function App() {
   const [isCelsius, setIsCelsius] = useState(true);
   
   const [loading, setLoading] = useState(false);
-  const [color, setColor] = useState("#ffffff");
 
     useEffect(() => {
         setLoading(true);
