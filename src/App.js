@@ -1,15 +1,23 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import React from 'react';
+import RingLoader from "react-spinners/RingLoader";
 import './App.css';
 
 export default function App() {
-
-  
   const [weather, setWeather] = useState({});
   const [celsius, setCelsius] = useState(0);
   const [isCelsius, setIsCelsius] = useState(true);
   
+  const [loading, setLoading] = useState(false);
+  const [color, setColor] = useState("#ffffff");
+
+    useEffect(() => {
+        setLoading(true);
+         setTimeout(() => {
+            setLoading(false);
+         }, 6000)
+    }, []);
   
   useEffect(() => {
     function success(pos) {
@@ -46,39 +54,44 @@ export default function App() {
   };
   
   return (
-    <div backgroundImage={`http://openweathermap.org/img/wn/${weather.weather?.[0].icon}@2x.png`}>
-      <spinner color="primary"/>
-      <div className="date-container">
-        <div>
-          <h1 className="title">Weather App</h1>
-          <h2 className="city">
-            {weather.name}, {weather.sys?.country}
-          </h2>
-          <div className="image">
-            <img
-              src={`http://openweathermap.org/img/wn/${weather.weather?.[0].icon}@2x.png`}
-              alt=""
-            />
+    <div className="loader">
+      {
+        loading ? 
+        <RingLoader size={150} color={"#123abc"} loading={loading} speedMultiplier={2} />
+        :
+
+        <div className="date-container">
+          <div>
+            <h1 className="title">Weather App</h1>
+            <h2 className="city">
+              {weather.name}, {weather.sys?.country}
+            </h2>
+            <div className="image">
+              <img
+                src={`http://openweathermap.org/img/wn/${weather.weather?.[0].icon}@2x.png`}
+                alt=""
+              />
+            </div>
+            <div className="options">
+              <h3>"{weather.weather?.[0].description}"</h3>
+              <h3>
+                {' '}
+                Pressure: {(weather.main?.pressure * 0.000987).toFixed(2)} atm
+              </h3>
+              <h3>
+                {' '}
+                Thermal Sensation:{' '}
+                {(weather.main?.feels_like - 273.15).toFixed(2)} °C
+              </h3>
+              <h3> Wind: {weather.wind?.speed} m/s</h3>
+            </div>
+            <h2 className="temperature">{celsius} {isCelsius ? '°C' : '°F'}</h2>
+            <button className="button" onClick={changeUnit}>
+              <b>Alternate °C/°F</b>
+            </button>
           </div>
-          <div className="options">
-            <h3>"{weather.weather?.[0].description}"</h3>
-            <h3>
-              {' '}
-              Pressure: {(weather.main?.pressure * 0.000987).toFixed(2)} atm
-            </h3>
-            <h3>
-              {' '}
-              Thermal Sensation:{' '}
-              {(weather.main?.feels_like - 273.15).toFixed(2)} °C
-            </h3>
-            <h3> Wind: {weather.wind?.speed} m/s</h3>
-          </div>
-          <h2 className="temperature">{celsius} {isCelsius ? '°C' : '°F'}</h2>
-          <button className="button" onClick={changeUnit}>
-            <b>Alternate °C/°F</b>
-          </button>
         </div>
-      </div>
+      }
     </div>
   );
 }
