@@ -39,7 +39,7 @@ h1 {
   height: auto;
   width: 300px;
   padding: 10px;
-  background: rgb(201, 199, 199);
+  background: transparent;
 }
 
 .title {
