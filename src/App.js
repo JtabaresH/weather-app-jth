@@ -9,13 +9,17 @@ export default function App() {
   const [celsius, setCelsius] = useState(0);
   const [isCelsius, setIsCelsius] = useState(true);
   const [loading, setLoading] = useState(false);
-  const weatherBackground = `${weather.weather?.[0].description}`
+  const weatherBackground = `${weather.weather?.[0].main}`
   const [changeBackground, setChangeBackground] = useState(weatherBackground);
-
-      if(changeBackground === "overcast clouds"){
-        setChangeBackground(document.body.style.background="url('https://thumbs.dreamstime.com/b/clouds-overcast-sky-view-climate-environment-weather-concept-sky-background-overcast-sky-background-clouds-170172058.jpg') no-repeat")
-      }
-      console.log(weatherBackground)
+      /* Cambios de fondos segun clima */
+        if(changeBackground === "Rain"){
+          setChangeBackground(document.body.style.background="url('https://previews.123rf.com/images/pohodka/pohodka1807/pohodka180700037/108184654-raindrops-on-the-glass-and-storm-clouds-in-the-background-rainy-weather-forecast-.jpg') no-repeat")
+        } else if(changeBackground === "Clouds"){
+          setChangeBackground(document.body.style.background="url('https://thumbs.dreamstime.com/b/clouds-overcast-sky-view-climate-environment-weather-concept-sky-background-overcast-sky-background-clouds-170172058.jpg') no-repeat")
+        } else if (changeBackground === "Clear"){
+          setChangeBackground(document.body.style.background="url('https://thumbs.dreamstime.com/b/clear-sky-sun-sunrays-daytime-good-weather-138115265.jpg') no-repeat")
+        }
+      /* Finaliza cambios de fondos */
     useEffect(() => {
         setLoading(true);
          setTimeout(() => {
@@ -33,7 +37,8 @@ export default function App() {
         .then((res) => {
           setWeather(res.data);
           setCelsius((res.data.main.temp - 273.15).toFixed(2));
-          setChangeBackground(res.data.weather?.[0].description)
+          setChangeBackground(res.data.weather?.[0].main)
+          console.log(res.data.weather)
         });
       }
       
@@ -43,11 +48,10 @@ export default function App() {
 
     navigator.geolocation.getCurrentPosition(success, error);
   }, []);
-  console.log(weather)
   
   const changeUnit = () => {
     if (isCelsius) {
-      // This is the convertion to meter
+      // This is the convertion to Fahrenheit
       setCelsius((((celsius - 32) * 5) / 9).toFixed(2));
       setIsCelsius(false);
     }
