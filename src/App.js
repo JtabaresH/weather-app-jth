@@ -1,33 +1,37 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import React from 'react';
 import './App.css';
 
 export default function App() {
+
+  
   const [weather, setWeather] = useState({});
   const [celsius, setCelsius] = useState(0);
   const [isCelsius, setIsCelsius] = useState(true);
-
+  
+  
   useEffect(() => {
     function success(pos) {
       var crd = pos.coords;
       axios
-        .get(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${crd.latitude}&lon=${crd.longitude}&appid=d25c8efe3241bd9b74963870e1b5cccf`
+      .get(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${crd.latitude}&lon=${crd.longitude}&appid=d25c8efe3241bd9b74963870e1b5cccf`
         )
         .then((res) => {
           setWeather(res.data);
           setCelsius((res.data.main.temp - 273.15).toFixed(2));
         });
-    }
-
-    function error(err) {
-      alert('El usuario no permitió el acceso a la ubicación');
+      }
+      
+      function error(err) {
+        alert('El usuario no permitió el acceso a la ubicación');
     }
 
     navigator.geolocation.getCurrentPosition(success, error);
   }, []);
   console.log(weather)
-
+  
   const changeUnit = () => {
     if (isCelsius) {
       // This is the convertion to meter
@@ -40,9 +44,10 @@ export default function App() {
       setIsCelsius(true);
     }
   };
-
+  
   return (
-    <div>
+    <div backgroundImage={`http://openweathermap.org/img/wn/${weather.weather?.[0].icon}@2x.png`}>
+      <spinner color="primary"/>
       <div className="date-container">
         <div>
           <h1 className="title">Weather App</h1>
@@ -70,7 +75,7 @@ export default function App() {
           </div>
           <h2 className="temperature">{celsius} {isCelsius ? '°C' : '°F'}</h2>
           <button className="button" onClick={changeUnit}>
-            <b>Alternate °F/°C</b>
+            <b>Alternate °C/°F</b>
           </button>
         </div>
       </div>
