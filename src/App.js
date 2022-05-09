@@ -52,7 +52,7 @@ export default function App() {
   const changeUnit = () => {
     if (isCelsius) {
       // This is the convertion to Fahrenheit
-      setCelsius((((celsius - 32) * 5) / 9).toFixed(2));
+      setCelsius(((celsius * 9/5) +32).toFixed(2));
       setIsCelsius(false);
     }
     //This is the convertion to decimeter
