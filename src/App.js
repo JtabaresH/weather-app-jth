@@ -95,7 +95,7 @@ export default function App() {
               <h3> Wind: {weather.wind?.speed} m/s</h3>
             </div>
             <h2 className="temperature">{celsius} {isCelsius ? '°C' : '°F'}</h2>
-            <button className="button" onClick={changeUnit}>
+            <button className="button" onClick={changeUnit} style={{cursor: 'pointer'}}>
               <b>Alternate °C/°F</b>
             </button>
           </div>
